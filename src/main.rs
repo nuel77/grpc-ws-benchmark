@@ -8,7 +8,7 @@ use std::sync::Arc;
 use std::time::Duration;
 use tokio::time::Instant;
 use tokio_util::sync::CancellationToken;
-use tracing::{error, info};
+use tracing::{debug, error, info};
 use yellowstone_grpc_proto::geyser::subscribe_update::UpdateOneof;
 use yellowstone_grpc_proto::geyser::{
     SlotStatus, SubscribeRequest, SubscribeRequestFilterSlots, SubscribeUpdateSlot,
@@ -125,7 +125,7 @@ async fn main() -> anyhow::Result<()> {
                     .entry(current_slot)
                     .and_modify(|item| item.record_second_seen())
                     .or_insert(Stats::record_first_seen(Protocol::WS));
-                info!("Received slot update pubsub: {:?}", current_slot);
+                debug!("Received slot update pubsub: {:?}", current_slot);
             }
             unsub().await
         }
@@ -146,7 +146,6 @@ async fn main() -> anyhow::Result<()> {
                         },
                     },
                 };
-                info!("Received update: {:?}", update);
                 match update {
                     Ok(update) => {
                         match update.update_oneof {
@@ -160,7 +159,7 @@ async fn main() -> anyhow::Result<()> {
                                 } else {
                                     continue;
                                 };
-                                info!("Received slot update grpc: {:?}", current_slot);
+                                debug!("Received slot update grpc: {:?}", current_slot);
                                 slot_update_recorder
                                     .entry(current_slot)
                                     .and_modify(|item| item.record_second_seen())
