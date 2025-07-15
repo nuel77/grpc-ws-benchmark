@@ -22,7 +22,7 @@ measures which protocol receives updates first and calculates the average latenc
    ```
    WS_URL=ws://your-rpc-node:8900
    GRPC_URL=http://your-rpc-node:10000
-   RUN_DURATION_SECS=30
+   RUN_DURATION=30
    ```
    Replace `your-rpc-node` with your Solana RPC node address.
 
